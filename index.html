@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Drag and Drop </title>
+  <style>
+    .container {
+      display: inline-block;
+      width: 200px;
+      height: 300px;
+      border: 1px solid #ccc;
+      padding: 10px;
+    }
+    .item {
+      background-color: #f2f2f2;
+      border: 1px solid #ccc;
+      padding: 5px;
+      margin-bottom: 5px;
+      cursor: move;
+    }
+    .item:hover {
+      background-color: #e0e0e0;
+    }
+    .success-message {
+      color: green;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="container1">
+    <div class="item" draggable="true">Item 1</div>
+    <div class="item" draggable="true">Item 2</div>
+    <div class="item" draggable="true">Item 3</div>
+    <div class="item" draggable="true">Item 4</div>
+  </div>
+  <div class="container" id="container2"></div>
+  <p id="message"></p>
+  <button id="resetBtn">Reset</button>
+
+  <script>
+    const container1 = document.getElementById('container1');
+    const container2 = document.getElementById('container2');
+    const message = document.getElementById('message');
+    const resetBtn = document.getElementById('resetBtn');
+
+    // Event listener for dragstart on items
+    container1.addEventListener('dragstart', (event) => {
+      // Store the dragged item's data
+      event.dataTransfer.setData('text/plain', event.target.innerText);
+    });
+
+    // Event listener for dragover on container2
+    container2.addEventListener('dragover', (event) => {
+      // Prevent default to allow drop
+      event.preventDefault();
+    });
+
+    // Event listener for drop on container2
+    container2.addEventListener('drop', (event) => {
+      // Prevent default to avoid browser handling
+      event.preventDefault();
+
+      // Get the dropped item's data
+      const data = event.dataTransfer.getData('text/plain');
+
+      // Create a new item in container2
+      const newItem = document.createElement('div');
+      newItem.classList.add('item');
+      newItem.innerText = data;
+
+      // Append the new item to container2
+      container2.appendChild(newItem);
+
+      // Display success message
+      message.innerText = 'Item dropped successfully!';
+    });
+
+    // Event listener for reset button click
+    resetBtn.addEventListener('click', () => {
+      // Clear container2
+      container2.innerHTML = '';
+
+      // Reset success message
+      message.innerText = '';
+    });
+  </script>
+</body>
+</html>
